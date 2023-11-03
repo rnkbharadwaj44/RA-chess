@@ -8,7 +8,6 @@ class AI:
     global tp
     tp=[]
 
-
     def __init__(self):
         pass
 
@@ -249,49 +248,57 @@ class AI:
             arr.append([y,x,move[0],move[1],mk])
         return arr
 
+    def calculateb(self, gametiles):
+        value = 0
+        key_loc = [(3, 3), (3, 4), (4, 3), (4, 4)]
+        for current in key_loc:
+            if gametiles[current[0]][current[1]].pieceonTile.tostring().isupper():
+                value -= 10
+            elif gametiles[current[0]][current[1]].pieceonTile.tostring().islower():
+                value += 10
 
-    def calculateb(self,gametiles):
-        value=0
+        bishop_pst = [[-20, -10, -10, -10, -10, -10, -10, -20],[-10, 5, 0, 0, 0, 0, 5, -10],[-10, 10, 10, 10, 10, 10, 10, -10],
+            [-10, 0, 10, 10, 10, 10, 0, -10],[-10, 5, 5, 10, 10, 5, 5, -10],[-10, 0, 5, 10, 10, 5, 0, -10],
+            [-10, 0, 0, 0, 0, 0, 0, -10], [-20, -10, -10, -10, -10, -10, -10, -20]]
+
+        knight_pst = [[-50, -40, -30, -30, -30, -30, -40, -50], [-40, -20, 0, 5, 5, 0, -20, -40], [-30, 5, 10, 15, 15, 10, 5, -30],
+            [-30, 0, 15, 20, 20, 15, 0, -30], [-30, 5, 15, 20, 20, 15, 5, -30], [-30, 0, 10, 15, 15, 10, 0, -30],
+            [-40, -20, 0, 0, 0, 0, -20, -40],[-50, -40, -30, -30, -30, -30, -40, -50]]
+
+        rook_pst = [[0, 0, 0, 5, 5, 0, 0, 0], [-5, 0, 0, 0, 0, 0, 0, -5], [-5, 0, 0, 0, 0, 0, 0, -5], [-5, 0, 0, 0, 0, 0, 0, -5],
+            [-5, 0, 0, 0, 0, 0, 0, -5], [-5, 0, 0, 0, 0, 0, 0, -5], [5, 10, 10, 10, 10, 10, 10, 5], [0, 0, 0, 0, 0, 0, 0, 0]]
+
+        queen_pst = [[-20, -10, -10, -5, -5, -10, -10, -20], [-10, 0, 0, 0, 0, 0, 0, -10], [-10, 5, 5, 5, 5, 5, 0, -10], [0, 0, 5, 5, 5, 5, 0, -5],
+            [-5, 0, 5, 5, 5, 5, 0, -5], [-10, 0, 5, 5, 5, 5, 0, -10], [-10, 0, 0, 0, 0, 0, 0, -10], [-20, -10, -10, -5, -5, -10, -10, -20]]
+
+
         for x in range(8):
             for y in range(8):
-                    if gametiles[y][x].pieceonTile.tostring()=='P':
-                        value=value-100
-
-                    if gametiles[y][x].pieceonTile.tostring()=='N':
-                        value=value-350
-
-                    if gametiles[y][x].pieceonTile.tostring()=='B':
-                        value=value-350
-
-                    if gametiles[y][x].pieceonTile.tostring()=='R':
-                        value=value-525
-
-                    if gametiles[y][x].pieceonTile.tostring()=='Q':
-                        value=value-1000
-
-                    if gametiles[y][x].pieceonTile.tostring()=='K':
-                        value=value-10000
-
-                    if gametiles[y][x].pieceonTile.tostring()=='p':
-                        value=value+100
-
-                    if gametiles[y][x].pieceonTile.tostring()=='n':
-                        value=value+350
-
-                    if gametiles[y][x].pieceonTile.tostring()=='b':
-                        value=value+350
-
-                    if gametiles[y][x].pieceonTile.tostring()=='r':
-                        value=value+525
-
-                    if gametiles[y][x].pieceonTile.tostring()=='q':
-                        value=value+1000
-
-                    if gametiles[y][x].pieceonTile.tostring()=='k':
-                        value=value+10000
-
+                if gametiles[y][x].pieceonTile.tostring() == 'P':
+                    value = value - 100
+                elif gametiles[y][x].pieceonTile.tostring() == 'N':
+                    value = value - 350 - knight_pst[y][x]
+                elif gametiles[y][x].pieceonTile.tostring() == 'B':
+                    value = value - 350 - bishop_pst[y][x]
+                elif gametiles[y][x].pieceonTile.tostring() == 'R':
+                    value = value - 525 - rook_pst[y][x]
+                elif gametiles[y][x].pieceonTile.tostring() == 'Q':
+                    value = value - 1000 - queen_pst[y][x]
+                elif gametiles[y][x].pieceonTile.tostring() == 'K':
+                    value = value - 10000
+                elif gametiles[y][x].pieceonTile.tostring() == 'p':
+                    value = value + 100
+                elif gametiles[y][x].pieceonTile.tostring() == 'n':
+                    value = value + 350 + knight_pst[y][x]
+                elif gametiles[y][x].pieceonTile.tostring() == 'b':
+                    value = value + 350 + bishop_pst[y][x]
+                elif gametiles[y][x].pieceonTile.tostring() == 'r':
+                    value = value + 525 + rook_pst[y][x]
+                elif gametiles[y][x].pieceonTile.tostring() == 'q':
+                    value = value + 1000 + queen_pst[y][x]
+                elif gametiles[y][x].pieceonTile.tostring() == 'k':
+                    value = value + 10000
         return value
-
 
     def move(self,gametiles,y,x,n,m):
         promotion=False
